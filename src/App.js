@@ -32,9 +32,11 @@ export default function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h1>Dictionary</h1>
+        <p>Note: make sure to enter words in small-caps.</p>
         <input
           onChange={findMeaning}
           value={word}
+          style={{padding:"1rem"}}
           placeholder="unlock the mystery"
         />
         <h2>{word}</h2>
