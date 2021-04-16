@@ -1,11 +1,16 @@
 import "./App.css";
 import { useState } from "react";
 import logo from "./logo.svg";
-const meaningDict = {
-  tranquility: "state of being calm",
-  neha: "eyes"
-};
+import someJson from './dictionary';
+ const meaningDict = someJson;
+//{
+//   tranquility: "state of being calm",
+//   neha: "eyes",
+//   feel: "me",
+//   me: "feel"
+// };
 const words = Object.keys(meaningDict);
+
 export default function App() {
   const [word, setWord] = useState("");
 
@@ -16,7 +21,7 @@ export default function App() {
     if (inputWord in meaningDict) {
       setMeaning(meaningDict[inputWord]);
     } else {
-      setMeaning("no idea bro!");
+      setMeaning("sorry! we don't have that in our database.");
     }
   }
   function wordClickHandler(word) {
@@ -33,8 +38,8 @@ export default function App() {
           placeholder="unlock the mystery"
         />
         <h2>{word}</h2>
-        <h2>{meaning}</h2>
-        <h2>
+        <h2 style={{backgroundColor: "white", color:"black", padding: "1rem", fontFamily:"sans-serif", fontSize:"20px", margin:"2rem"}}>{meaning}</h2>
+        {/* <h2>
           Words I know:
           {words.map((w) => (
             <span
@@ -47,7 +52,7 @@ export default function App() {
               {w}
             </span>
           ))}
-        </h2>
+        </h2> */}
         </header>
     </div>
   );
