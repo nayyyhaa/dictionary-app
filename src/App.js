@@ -1,31 +1,31 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "./logo.svg";
-import someJson from './dictionary';
- const meaningDict = someJson;
-//{
-//   tranquility: "state of being calm",
-//   neha: "eyes",
-//   feel: "me",
-//   me: "feel"
-// };
-const words = Object.keys(meaningDict);
 
 export default function App() {
+  const [searchText, setSearchText] = useState("");
   const [word, setWord] = useState("");
 
   const [meaning, setMeaning] = useState("");
+
+  useEffect(async () => {
+    try {
+      let response = await fetch(
+        `https://api.dictionaryapi.dev/api/v2/entries/en/hello`
+      );
+      let meaningArr = await response.json();
+      setMeaning(meaningArr);
+    } catch (err) {
+      console.log(err);
+    }
+  }, [word]);
   function findMeaning(event) {
     const inputWord = event.target.value;
-    setWord(inputWord);
-    if (inputWord in meaningDict) {
-      setMeaning(meaningDict[inputWord]);
-    } else {
-      setMeaning("sorry! we don't have that in our database.");
-    }
+    setSearchText(inputWord);
   }
-  function wordClickHandler(word) {
-    setMeaning(meaningDict[word]);
+
+  function searchMeaningHandler() {
+    setWord(searchText);
   }
   return (
     <div className="App">
@@ -35,27 +35,23 @@ export default function App() {
         <p>Note: make sure to enter words in small-caps.</p>
         <input
           onChange={findMeaning}
-          value={word}
-          style={{padding:"1rem"}}
+          value={searchText}
+          style={{ padding: "1rem" }}
           placeholder="unlock the mystery"
         />
-        <h2>{word}</h2>
-        <h2 style={{backgroundColor: "white", color:"black", padding: "1rem", fontFamily:"sans-serif", fontSize:"20px", margin:"2rem"}}>{meaning}</h2>
-        {/* <h2>
-          Words I know:
-          {words.map((w) => (
-            <span
-              onClick={() => wordClickHandler(w)}
-              style={{
-                cursor: "pointer",
-                padding: "0.5rem"
-              }}
-            >
-              {w}
-            </span>
-          ))}
-        </h2> */}
-        </header>
+        <button onClick={searchMeaningHandler}>Search</button>
+        <h2>{word && `word searched: ${word}`}</h2>
+        {word &&
+          meaning[0].meanings.map((el) => {
+            return (
+              <>
+                <h2>{el.partOfSpeech}</h2>
+                <p>{el.definitions[0].definition}</p>
+                <p>{el.definitions[0].example}</p>
+              </>
+            );
+          })}
+      </header>
     </div>
   );
 }
