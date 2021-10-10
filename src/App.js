@@ -11,7 +11,7 @@ export default function App() {
   useEffect(async () => {
     try {
       let response = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/hello`
+        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
       );
       let meaningArr = await response.json();
       setMeaning(meaningArr);
@@ -32,16 +32,17 @@ export default function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h1>Dictionary</h1>
-        <p>Note: make sure to enter words in small-caps.</p>
         <input
           onChange={findMeaning}
           value={searchText}
           style={{ padding: "1rem" }}
           placeholder="unlock the mystery"
         />
-        <button onClick={searchMeaningHandler}>Search</button>
+        <button id="search-btn" onClick={searchMeaningHandler}>
+          Search
+        </button>
         <h2>{word && `word searched: ${word}`}</h2>
-        {word &&
+        {meaning[0] &&
           meaning[0].meanings.map((el) => {
             return (
               <>
